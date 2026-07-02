@@ -37,7 +37,7 @@ class MotoGpRemoteDataSource {
   /// menjadi CachedEvent + list CachedSession per event.
   /// Filter: hanya broadcasts dengan type == "SESSION"
   /// dan category.acronym == "MGP" (SRS-D4, SRS-D5)
-  Future<List<EventWithSessions>> fetchEvents(int seasonYear) async {
+  Future<List<RemotEventData>> fetchEvents(int seasonYear) async {
     final url = Uri.parse('$_baseUrl/events?seasonYear=$seasonYear');
     final response = await http.get(url, headers: _headers);
 
@@ -46,7 +46,7 @@ class MotoGpRemoteDataSource {
     }
 
     final List<dynamic> data = jsonDecode(response.body);
-    final List<EventWithSessions> result = [];
+    final List<RemotEventData> result = [];
 
     final now = DateTime.now();
 
@@ -98,7 +98,7 @@ class MotoGpRemoteDataSource {
           fetchedAt: now,
         );
 
-        result.add(EventWithSessions(event: event, sessions: sessions));
+        result.add(RemotEventData(event: event, sessions: sessions));
       } catch (e) {
         // SRS-E3: skip event yang gagal parse, jangan crash
         continue;
@@ -111,9 +111,9 @@ class MotoGpRemoteDataSource {
 
 /// Wrapper sederhana untuk membawa event + sesi-sesinya sekaligus,
 /// dipakai sebagai hasil parsing sebelum disimpan ke SQLite
-class EventWithSessions {
+class RemotEventData {
   final CachedEvent event;
   final List<CachedSession> sessions;
 
-  EventWithSessions({required this.event, required this.sessions});
+  RemotEventData({required this.event, required this.sessions});
 }
