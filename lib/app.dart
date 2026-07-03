@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moto_gp_schedule/core/constants/app_theme.dart';
 import 'package:moto_gp_schedule/data/models/datasources/local/motogp_local_datasource.dart';
 import 'package:moto_gp_schedule/presentation/screens/home/HomeScreen.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'MotoGP Schedule',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-          useMaterial3: true,
-        ),
+        theme: AppTheme.themeData,
         home: HomeScreen(),
         
         ),
