@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:moto_gp_schedule/data/models/datasources/remot/motogp_remote_datasource.dart';
-import 'package:moto_gp_schedule/data/models/datasources/repositories/motogp_repository.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/models/datasources/repositories/motogp_repository.dart';
 import '../../providers/schedule_provider.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -12,7 +11,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<ScheduleProvider>();
+    final provider = context.watch<ScheduleProvider>();
     final event = eventWithSessions.event;
     final sessions = eventWithSessions.sessions;
 
@@ -58,20 +57,17 @@ class DetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Daftar sesi
           const Text(
             'Jadwal Sesi',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
+
+          // Daftar sesi
           ...sessions.map((session) {
             final status = provider.getSessionStatus(session);
-            final wib = session.dateStartUtc.add(const Duration(hours: 7));
-            final hour = wib.hour.toString().padLeft(2, '0');
-            final minute = wib.minute.toString().padLeft(2, '0');
-            final timeStr = '${wib.day}/${wib.month}/${wib.year} $hour:$minute WIB';
+            final timeStr = provider.formatSessionTime(session.dateStartUtc);
 
-            // Warna badge berdasarkan status
             Color badgeColor;
             String badgeLabel;
             if (status == 'upcoming') {

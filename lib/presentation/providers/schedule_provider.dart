@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:moto_gp_schedule/data/models/cached_session.dart';
-import 'package:moto_gp_schedule/data/models/datasources/repositories/motogp_repository.dart';
+
+
+import '../../data/models/datasources/repositories/motogp_repository.dart';
 
 
 enum ScheduleState { initial, loading, loaded, error }
 
+
 class ScheduleProvider extends ChangeNotifier {
   final MotoGpRepository repository;
+
+
+  // Timezone yang dipilih user — default WIB
+String _selectedTimezone = 'WIB';
+String get selectedTimezone => _selectedTimezone;
+
+final Map<String, int> timezoneOffset = {
+  'WIB': 7,
+  'WITA': 8,
+  'WIT': 9,
+};
+
+// Method untuk ganti timezone
+void setTimezone(String timezone) {
+  _selectedTimezone = timezone;
+  notifyListeners();
+}
+
+// Helper format waktu — dipakai di semua screen
+String formatSessionTime(DateTime utc) {
+  final offset = timezoneOffset[_selectedTimezone] ?? 7;
+  final local = utc.add(Duration(hours: offset));
+  final hour = local.hour.toString().padLeft(2, '0');
+  final minute = local.minute.toString().padLeft(2, '0');
+  return '${local.day}/${local.month} $hour:$minute $_selectedTimezone';
+}
+
+String formatDate(DateTime utc) {
+  final offset = timezoneOffset[_selectedTimezone] ?? 7;
+  final local = utc.add(Duration(hours: offset));
+  return '${local.day}/${local.month}/${local.year}';
+}
 
   ScheduleProvider({required this.repository});
 
