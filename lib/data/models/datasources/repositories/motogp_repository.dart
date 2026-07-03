@@ -5,6 +5,7 @@ import 'package:moto_gp_schedule/data/models/datasources/remot/motogp_remote_dat
 import 'package:moto_gp_schedule/data/models/reminder.dart';
 
 
+
 /// Bungkusan sederhana: satu event beserta semua sesinya,
 /// dipakai supaya Provider gampang nampilin di layar
 class EventWithSessions {
