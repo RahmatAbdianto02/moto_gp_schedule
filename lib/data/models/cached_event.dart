@@ -1,3 +1,5 @@
+
+// urutan 1
 class CachedEvent {
   final int? id;
   final String eventId;       // id event dari API

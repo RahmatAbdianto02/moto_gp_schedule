@@ -85,7 +85,7 @@ class MotoGpRepository {
 
   // ===================== REMINDER =====================
 
-  Future<void> addReminder(Reminder reminder) => localDataSource.addReminder(reminder);
+  Future<int> addReminder(Reminder reminder) => localDataSource.addReminder(reminder);
 
   Future<List<Reminder>> getAllActiveReminders() =>
       localDataSource.getAllActiveReminders();

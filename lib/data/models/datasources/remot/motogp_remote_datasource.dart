@@ -3,11 +3,20 @@ import 'package:http/http.dart' as http;
 import 'package:moto_gp_schedule/data/models/cached_event.dart';
 import 'package:moto_gp_schedule/data/models/cached_session.dart';
 
+// urutan 2
+// setelah membuat cetakan dari class cached_event lalu membuat moto_gp_remot 
+//yang tugasnya pergi ke api dan ambil data 
+// Kirim permintaan ke api.motogp.pulselive.com
+// Terima data JSON
+// Saring data yang dibutuhkan (hanya MotoGP, bukan Moto2/Moto3)
+// Ubah JSON jadi object Dart (pakai fromMap())
+
 
 class MotoGpRemoteDataSource {
   static const String _baseUrl = 'https://api.motogp.pulselive.com/motogp/v1';
 
   // Beberapa hidden API menolak request tanpa User-Agent yang wajar
+  // method buat mengambil data 
   static const Map<String, String> _headers = {
     'User-Agent': 'Mozilla/5.0 (Android) MotoGpScheduleApp/1.0',
     'Accept': 'application/json',
@@ -16,20 +25,21 @@ class MotoGpRemoteDataSource {
   /// Ambil tahun season yang sedang berjalan (current: true)
   /// dari GET /results/seasons
   Future<int> fetchCurrentSeasonYear() async {
+    //Kirim permintaan ke API.
     final url = Uri.parse('$_baseUrl/results/seasons');
     final response = await http.get(url, headers: _headers);
 
     if (response.statusCode != 200) {
       throw Exception('Gagal fetch seasons: ${response.statusCode}');
     }
-
+    //Ubah teks JSON tadi jadi List Dart yang bisa kita baca. Hasilnya list berisi 3 item (3 season).
     final List<dynamic> data = jsonDecode(response.body);
 
     final currentSeason = data.firstWhere(
       (season) => season['current'] == true,
       orElse: () => throw Exception('Tidak ada season dengan current: true'),
     );
-
+      //Ambil angka tahunnya saja — return 2026
     return currentSeason['year'] as int;
   }
 
