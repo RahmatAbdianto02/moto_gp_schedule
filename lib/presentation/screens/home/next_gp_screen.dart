@@ -67,9 +67,11 @@ class NextGpScreen extends StatelessWidget {
       backgroundColor: AppTheme.white,
       appBar: AppBar(
         title: const Text('MOTOGP SCHEDULE'),
+        
         backgroundColor: AppTheme.primary,
         foregroundColor: AppTheme.white,
       ),
+    
       body: RefreshIndicator(
         color: AppTheme.primary,
         onRefresh: () => provider.loadSchedule(forceRefresh: true),

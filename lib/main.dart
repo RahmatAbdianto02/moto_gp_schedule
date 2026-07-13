@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:moto_gp_schedule/notifications/notification_helper.dart';
 import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationHelper.instance.initialize();
+  await NotificationHelper.instance.testNotification();
   runApp(const App());
 }
 
