@@ -5,7 +5,7 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationHelper.instance.initialize();
-  await NotificationHelper.instance.testNotification();
+  
   runApp(const App());
 }
 
